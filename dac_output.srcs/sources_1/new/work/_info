@@ -1,0 +1,94 @@
+m255
+K4
+z2
+13
+!s112 1.1
+!i10d 8192
+!i10e 25
+!i10f 100
+cModel Technology
+dC:/Users/user/Basys 3 Project Files/ADC_variable_resistor_input/ADC_variable_resistor_input.srcs/sources_1/new
+vclock_divider
+Z0 !s110 1761777668
+!i10b 1
+!s100 IzDIJ57KNnTBji2i9o>mT3
+INf2LBXJ=XF:fHhI`3i7iE1
+Z1 VDg1SIo80bB@j0V0VzS_@n1
+Z2 dC:/Users/user/Basys 3 Project Files/dac_output/dac_output.srcs/sources_1/new
+w1761776058
+8C:/Users/user/Basys 3 Project Files/dac_output/dac_output.srcs/sources_1/new/clock_divider.v
+FC:/Users/user/Basys 3 Project Files/dac_output/dac_output.srcs/sources_1/new/clock_divider.v
+L0 3
+Z3 OV;L;10.5b;63
+r1
+!s85 0
+31
+Z4 !s108 1761777668.000000
+!s107 C:/Users/user/Basys 3 Project Files/dac_output/dac_output.srcs/sources_1/new/clock_divider.v|
+!s90 -reportprogress|300|-work|work|-stats=none|C:/Users/user/Basys 3 Project Files/dac_output/dac_output.srcs/sources_1/new/clock_divider.v|
+!i113 1
+Z5 o-work work
+Z6 tCvgOpt 0
+vdac
+R0
+!i10b 1
+!s100 CF^W5H5M<;AE2VI[[^:mV0
+I4Q@0a52::f6cl4iR]oEI50
+R1
+R2
+w1761777575
+8C:/Users/user/Basys 3 Project Files/dac_output/dac_output.srcs/sources_1/new/dac.v
+FC:/Users/user/Basys 3 Project Files/dac_output/dac_output.srcs/sources_1/new/dac.v
+Z7 L0 23
+R3
+r1
+!s85 0
+31
+R4
+!s107 C:/Users/user/Basys 3 Project Files/dac_output/dac_output.srcs/sources_1/new/dac.v|
+!s90 -reportprogress|300|-work|work|-stats=none|C:/Users/user/Basys 3 Project Files/dac_output/dac_output.srcs/sources_1/new/dac.v|
+!i113 1
+R5
+R6
+vdelay_timer
+R0
+!i10b 1
+!s100 OnCR:cf6Z2LETZNMPcN7n3
+IdWDiMlUJjX8;^j6K?5LK50
+R1
+R2
+w1761697785
+8C:/Users/user/Basys 3 Project Files/dac_output/dac_output.srcs/sources_1/new/delay_timer.v
+FC:/Users/user/Basys 3 Project Files/dac_output/dac_output.srcs/sources_1/new/delay_timer.v
+L0 3
+R3
+r1
+!s85 0
+31
+R4
+!s107 C:/Users/user/Basys 3 Project Files/dac_output/dac_output.srcs/sources_1/new/delay_timer.v|
+!s90 -reportprogress|300|-work|work|-stats=none|C:/Users/user/Basys 3 Project Files/dac_output/dac_output.srcs/sources_1/new/delay_timer.v|
+!i113 1
+R5
+R6
+vtop_tb
+R0
+!i10b 1
+!s100 HPgmi@W^l`a1:OJ9bTS_a3
+IM`E^izd13e]kWMcL>P6BI0
+R1
+R2
+w1761777331
+8C:/Users/user/Basys 3 Project Files/dac_output/dac_output.srcs/sources_1/new/top_tb.v
+FC:/Users/user/Basys 3 Project Files/dac_output/dac_output.srcs/sources_1/new/top_tb.v
+R7
+R3
+r1
+!s85 0
+31
+R4
+!s107 C:/Users/user/Basys 3 Project Files/dac_output/dac_output.srcs/sources_1/new/top_tb.v|
+!s90 -reportprogress|300|-work|work|-stats=none|C:/Users/user/Basys 3 Project Files/dac_output/dac_output.srcs/sources_1/new/top_tb.v|
+!i113 1
+R5
+R6
