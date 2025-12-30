@@ -1,16 +1,16 @@
 `timescale 1ns / 1ps
 
 module dac#(
-        parameter N_tot   = 0, //total number of bits that needs to be send
-        parameter N_valid = 0, //total number of valid bits
+        parameter N_tot   = 1, //total number of bits that needs to be send
+        parameter N_valid = 1, //total number of valid bits
         
         //please refer to data sheet for values
-        parameter Vref  = 0, //units: V
-        parameter tCH   = 0, //units: ns
-        parameter tCL   = 0, //units: ns
-        parameter tCSS0 = 0, //units: ns
-        parameter tCSF  = 0, //units: ns
-        parameter tSCPW = 0 //units: ns
+        parameter Vref  = 1, //units: V
+        parameter tCH   = 1, //units: ns
+        parameter tCL   = 1, //units: ns
+        parameter tCSS0 = 1, //units: ns
+        parameter tCSF  = 1, //units: ns
+        parameter tSCPW = 1 //units: ns
     )(
         input  wire                   clk,
         input  wire                   reset,
@@ -19,15 +19,50 @@ module dac#(
         output wire                   cs_out,
         output wire                   sclk_out,
         output reg                    d_out,
-        output wire                   busy_out
+        output wire                   busy_out,
+        
+        output wire [23:0] test //debug
     );
     
-    reg [N_valid - 1 : 0] voltage_binary = 0;
-    reg [N_tot - 1 : 0] output_data = 0;
-    always @(*) begin : voltage_to_binary_conversion
-        voltage_binary = (voltage_output * ((1 << 16) - 1)) / Vref + 1'b1;          //converting voltage into bits
-        output_data = {2'b01, voltage_binary, {(N_tot - (N_valid + 2)){1'b0}}};     //converting the bits into output data stream for dac to read
+    localparam integer FULL_SCALE = (1 << 16);
+    localparam integer INV_VREF = (1 << 24) / Vref;
+    reg [63:0] mult_stage;        // Stage 1: multiplication
+    reg [63:0] scale_stage;       // Stage 2: scaling (division replacement)
+    reg [N_tot-1:0] output_data;  // Stage 3: packed DAC frame
+    
+    always @(posedge clk) begin
+        if (reset) begin
+            mult_stage <= 0;
+        end
+        else if (busy_out == 0) begin
+            // voltage_output × full-scale constant
+            mult_stage <= voltage_output * FULL_SCALE;
+        end
     end
+    
+    always @(posedge clk) begin
+        if (reset) begin
+            scale_stage <= 0;
+        end
+        else begin
+            // Multiply by reciprocal instead of dividing
+            scale_stage <= (mult_stage * INV_VREF) >> 24;
+        end
+    end
+    
+    always @(posedge clk) begin
+        if (reset) begin
+            output_data <= 0;
+        end
+        else begin
+            output_data <= {2'b01,
+                            scale_stage[N_valid-1:0],
+                            {(N_tot - (N_valid + 2)){1'b0}}};
+        end
+    end
+    
+    
+    assign test = output_data; //debug
     
     reg busy = 0;
     reg cs_reg = 1; //active low to activate
@@ -100,6 +135,7 @@ module dac#(
     
     always @(*) begin : next_state_logic
         next_state = state;
+        sclk_clock_enable = sclk_clock_enable;
         case(state)
             IDLE: begin
                 if(dac_enable_rising) begin
@@ -119,7 +155,7 @@ module dac#(
                 end
             end
             
-            CONV: begin
+            CONV: begin 
                 if(conv_wait_done) begin
                     next_state = CONV_CONTINUE;
                     sclk_clock_enable = 1;
@@ -170,12 +206,14 @@ module dac#(
         end
         else begin
             if(state == CS_START) begin : CS_trigger_update
-                //pulls cs high for tCSPW to trigger dac
+                //pulls busy indicator high to indicate busy state
                 busy <= 1;
+                //pulls cs pin high for tCSPW ns
                 cs_reg <= 1;
             end
             
             if(state == CONV) begin : CONV_register_update
+                busy <= 1;
                 cs_reg <= 0;
             end
             

@@ -23,12 +23,18 @@
 module top_tb();
     reg clk = 0;
     reg reset = 0;
-    reg [15:0] voltage_output = 100;
+    reg [15:0] voltage_output = 250;
     reg dac_enable = 0;
     wire cs;
     wire sclk;
     wire d_out;
     wire busy;
+    
+    wire [23:0] test_output;
+    
+    //reg [15:0] received_voltage = 100;
+    
+    //wire [15:0] voltage_output = received_voltage; //storing the voltage from computer to voltage output for dac
 
     dac #(
         .N_tot(24),
@@ -48,6 +54,9 @@ module top_tb();
         .sclk_out(sclk),
         .d_out(d_out),
         .busy_out(busy)
+        
+        ,
+        .test(test_output)
     );
     
     always #5 clk = ~clk;
@@ -57,6 +66,10 @@ module top_tb();
         #10;
         reset = 0;
         #10;
+        dac_enable = 1;
+        #800;
+        dac_enable = 0;
+        #1000;
         dac_enable = 1;
     end
 endmodule
