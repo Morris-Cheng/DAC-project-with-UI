@@ -31,6 +31,7 @@ module top_tb();
     wire busy;
     
     wire [23:0] test_output;
+    wire [15:0] LD = test_output[21:6];
     
     //reg [15:0] received_voltage = 100;
     

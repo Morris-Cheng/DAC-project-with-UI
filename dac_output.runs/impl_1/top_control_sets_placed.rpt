@@ -1,7 +1,7 @@
 Copyright 1986-2022 Xilinx, Inc. All Rights Reserved. Copyright 2022-2025 Advanced Micro Devices, Inc. All Rights Reserved.
 ---------------------------------------------------------------------------------------------------------------------------------------------
 | Tool Version : Vivado v.2025.1 (win64) Build 6140274 Thu May 22 00:12:29 MDT 2025
-| Date         : Tue Dec 30 12:47:25 2025
+| Date         : Tue Dec 30 23:10:48 2025
 | Host         : LAPTOP-DSFFK1DP running 64-bit major release  (build 9200)
 | Command      : report_control_sets -verbose -file top_control_sets_placed.rpt
 | Design       : top
@@ -23,11 +23,11 @@ Table of Contents
 +----------------------------------------------------------+-------+
 |                          Status                          | Count |
 +----------------------------------------------------------+-------+
-| Total control sets                                       |    14 |
-|    Minimum number of control sets                        |    14 |
+| Total control sets                                       |    15 |
+|    Minimum number of control sets                        |    15 |
 |    Addition due to synthesis replication                 |     0 |
 |    Addition due to physical synthesis replication        |     0 |
-| Unused register locations in slices containing registers |    54 |
+| Unused register locations in slices containing registers |    53 |
 +----------------------------------------------------------+-------+
 * Control sets can be merged at opt_design using control_set_merge or merge_equivalent_drivers
 ** Run report_qor_suggestions for automated merging and remapping suggestions
@@ -39,15 +39,15 @@ Table of Contents
 +--------------------+-------+
 |       Fanout       | Count |
 +--------------------+-------+
-| Total control sets |    14 |
+| Total control sets |    15 |
 | >= 0 to < 4        |     2 |
 | >= 4 to < 6        |     2 |
 | >= 6 to < 8        |     2 |
 | >= 8 to < 10       |     2 |
 | >= 10 to < 12      |     1 |
 | >= 12 to < 14      |     0 |
-| >= 14 to < 16      |     2 |
-| >= 16              |     3 |
+| >= 14 to < 16      |     0 |
+| >= 16              |     6 |
 +--------------------+-------+
 * Control sets can be remapped at either synth_design or opt_design
 
@@ -58,12 +58,12 @@ Table of Contents
 +--------------+-----------------------+------------------------+-----------------+--------------+
 | Clock Enable | Synchronous Set/Reset | Asynchronous Set/Reset | Total Registers | Total Slices |
 +--------------+-----------------------+------------------------+-----------------+--------------+
-| No           | No                    | No                     |              26 |           12 |
+| No           | No                    | No                     |              26 |           11 |
 | No           | No                    | Yes                    |               0 |            0 |
-| No           | Yes                   | No                     |              59 |           19 |
-| Yes          | No                    | No                     |              39 |           13 |
+| No           | Yes                   | No                     |              74 |           27 |
+| Yes          | No                    | No                     |              41 |           15 |
 | Yes          | No                    | Yes                    |               0 |            0 |
-| Yes          | Yes                   | No                     |              30 |           13 |
+| Yes          | Yes                   | No                     |              46 |           17 |
 +--------------+-----------------------+------------------------+-----------------+--------------+
 
 
@@ -77,16 +77,17 @@ Table of Contents
 |  clk_IBUF_BUFG                                  | dac/d_out_i_1_n_0                                  |                                         |                1 |              1 |         1.00 |
 |  clk_IBUF_BUFG                                  | dac/CS_end/non_zero_delay.delay_counter[3]_i_2_n_0 | dac/CS_end/non_zero_delay.delay_counter |                1 |              4 |         4.00 |
 |  clk_IBUF_BUFG                                  | uart_rx_inst/bit_idx[3]_i_1_n_0                    | uart_rx_inst/baud_cnt0_in[10]           |                2 |              4 |         2.00 |
-|  clk_IBUF_BUFG                                  | dac/sclk_clock/E[0]                                | dac/clear                               |                2 |              6 |         3.00 |
+|  clk_IBUF_BUFG                                  | dac/sclk_clock/E[0]                                | dac/clear                               |                1 |              6 |         6.00 |
 |  clk_IBUF_BUFG                                  | uart_rx_inst/baud_cnt[10]_i_2_n_0                  | uart_rx_inst/baud_cnt0_in[10]           |                3 |              6 |         2.00 |
 |  clk_IBUF_BUFG                                  |                                                    | uart_rx_inst/baud_cnt0_in[10]           |                3 |              8 |         2.67 |
 |  clk_IBUF_BUFG                                  | uart_rx_inst/data_buffer[7]                        |                                         |                3 |              8 |         2.67 |
-|  clk_IBUF_BUFG                                  | uart_rx_inst/baud_cnt[15]_i_2_n_0                  | uart_rx_inst/baud_cnt0_in[0]            |                5 |             10 |         2.00 |
-|  clk_IBUF_BUFG                                  | uart_rx_inst/E[0]                                  |                                         |                5 |             15 |         3.00 |
-|  clk_IBUF_BUFG                                  | uart_rx_inst/o_data[14]_i_1_n_0                    |                                         |                4 |             15 |         3.75 |
+|  clk_IBUF_BUFG                                  | uart_rx_inst/baud_cnt[15]_i_2_n_0                  | uart_rx_inst/baud_cnt0_in[0]            |                4 |             10 |         2.50 |
+|  clk_IBUF_BUFG                                  | dac/CEP                                            | reset_IBUF                              |                6 |             16 |         2.67 |
+|  clk_IBUF_BUFG                                  | uart_rx_inst/E[0]                                  |                                         |                5 |             16 |         3.20 |
+|  clk_IBUF_BUFG                                  | uart_rx_inst/o_data[15]_i_1_n_0                    |                                         |                6 |             16 |         2.67 |
 |  clk_IBUF_BUFG                                  |                                                    | display_inst/digit_counter[0]_i_1_n_0   |                5 |             17 |         3.40 |
-|  clk_IBUF_BUFG                                  |                                                    |                                         |               11 |             25 |         2.27 |
-|  clk_IBUF_BUFG                                  |                                                    | reset_IBUF                              |               11 |             34 |         3.09 |
+|  clk_IBUF_BUFG                                  |                                                    |                                         |               10 |             25 |         2.50 |
+|  clk_IBUF_BUFG                                  |                                                    | reset_IBUF                              |               19 |             49 |         2.58 |
 +-------------------------------------------------+----------------------------------------------------+-----------------------------------------+------------------+----------------+--------------+
 
 

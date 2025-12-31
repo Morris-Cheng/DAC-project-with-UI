@@ -10,7 +10,7 @@ module top(
         output wire       d_in,
         output wire [7:0] seg,
         output wire [3:0] an,
-        output wire led
+        output wire [15:0] LD
     );
     
     wire [15:0] rx_value; //input rx value from the computer
@@ -34,6 +34,7 @@ module top(
     
     wire [15:0] voltage_output = 250; //storing the voltage from computer to voltage output for dac
     wire busy;
+    wire [23:0] output_voltage;
     
     dac #(
         .N_tot(24),
@@ -47,13 +48,17 @@ module top(
     ) dac(
         .clk(clk),
         .reset(reset),
-        .voltage_output(250),
+        .voltage_output(received_voltage),
         .dac_enable(dac_enable),
         .cs_out(cs),
         .sclk_out(sclk),
         .d_out(d_in),
-        .busy_out(busy)
+        .busy_out(busy),
+        
+        .test(output_voltage)
     );
+    
+    assign LD = output_voltage[21:6];
     
     wire [15:0] value = received_voltage * 10;
     
@@ -65,6 +70,4 @@ module top(
         .seg(seg),
         .an(an)
     );
-    
-    assign led = cs;
 endmodule
