@@ -41,8 +41,8 @@ module top_tb();
         .N_tot(24),
         .N_valid(16),
         .Vref(250),
-        .tCH(8),
-        .tCL(8),
+        .tCH(15),
+        .tCL(15),
         .tCSS0(8),
         .tCSF(100),
         .tSCPW(20)
