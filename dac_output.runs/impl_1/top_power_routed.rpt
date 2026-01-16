@@ -1,7 +1,7 @@
 Copyright 1986-2022 Xilinx, Inc. All Rights Reserved. Copyright 2022-2025 Advanced Micro Devices, Inc. All Rights Reserved.
 -------------------------------------------------------------------------------------------------------------------------------------------------
 | Tool Version     : Vivado v.2025.1 (win64) Build 6140274 Thu May 22 00:12:29 MDT 2025
-| Date             : Tue Dec 30 23:11:14 2025
+| Date             : Thu Jan  8 15:44:15 2026
 | Host             : LAPTOP-DSFFK1DP running 64-bit major release  (build 9200)
 | Command          : report_power -file top_power_routed.rpt -pb top_power_summary_routed.pb -rpx top_power_routed.rpx
 | Design           : top
@@ -52,15 +52,15 @@ Table of Contents
 +----------------+-----------+----------+-----------+-----------------+
 | On-Chip        | Power (W) | Used     | Available | Utilization (%) |
 +----------------+-----------+----------+-----------+-----------------+
-| Clocks         |     0.001 |        3 |       --- |             --- |
-| Slice Logic    |    <0.001 |     2380 |       --- |             --- |
-|   LUT as Logic |    <0.001 |     1539 |     20800 |            7.40 |
+| Clocks         |     0.002 |        3 |       --- |             --- |
+| Slice Logic    |    <0.001 |     2384 |       --- |             --- |
+|   LUT as Logic |    <0.001 |     1545 |     20800 |            7.43 |
 |   CARRY4       |    <0.001 |      323 |      8150 |            3.96 |
-|   Register     |    <0.001 |      187 |     41600 |            0.45 |
+|   Register     |    <0.001 |      189 |     41600 |            0.45 |
 |   F7/F8 Muxes  |    <0.001 |        1 |     32600 |           <0.01 |
 |   Others       |     0.000 |       17 |       --- |             --- |
-| Signals        |     0.001 |     1974 |       --- |             --- |
-| I/O            |     0.022 |       35 |       106 |           33.02 |
+| Signals        |     0.002 |     1977 |       --- |             --- |
+| I/O            |     0.021 |       35 |       106 |           33.02 |
 | Static Power   |     0.062 |          |           |                 |
 | Total          |     0.087 |          |           |                 |
 +----------------+-----------+----------+-----------+-----------------+
@@ -142,6 +142,7 @@ Table of Contents
 | Name           | Power (W) |
 +----------------+-----------+
 | top            |     0.025 |
+|   dac          |     0.001 |
 |   display_inst |     0.002 |
 +----------------+-----------+
 

@@ -34,7 +34,6 @@ module top(
     
     wire [15:0] voltage_output = 250; //storing the voltage from computer to voltage output for dac
     wire busy;
-    wire [23:0] output_voltage;
     
     dac #(
         .N_tot(24),
@@ -53,12 +52,8 @@ module top(
         .cs_out(cs),
         .sclk_out(sclk),
         .d_out(d_in),
-        .busy_out(busy),
-        
-        .test(output_voltage)
+        .busy_out(busy)
     );
-    
-    assign LD = output_voltage[21:6];
     
     wire [15:0] value = received_voltage * 10;
     

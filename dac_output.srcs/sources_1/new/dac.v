@@ -19,9 +19,7 @@ module dac#(
         output wire                   cs_out,
         output wire                   sclk_out,
         output reg                    d_out,
-        output wire                   busy_out,
-        
-        output wire [23:0] test //debug
+        output wire                   busy_out
     );
     
     localparam integer FULL_SCALE = (1 << 16);
@@ -60,9 +58,6 @@ module dac#(
                             {(N_tot - (N_valid + 2)){1'b0}}};
         end
     end
-    
-    
-    assign test = output_data; //debug
     
     reg busy = 0;
     reg cs_reg = 1; //active low to activate

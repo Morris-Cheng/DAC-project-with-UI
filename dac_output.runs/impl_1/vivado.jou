@@ -3,8 +3,8 @@
 # SW Build 6140274 on Thu May 22 00:12:29 MDT 2025
 # IP Build 6138677 on Thu May 22 03:10:11 MDT 2025
 # SharedData Build 6139179 on Tue May 20 17:58:58 MDT 2025
-# Start of session at: Tue Dec 30 23:12:05 2025
-# Process ID         : 25428
+# Start of session at: Thu Jan  8 15:44:38 2026
+# Process ID         : 26280
 # Current directory  : C:/Users/user/Basys 3 Project Files/dac_output/dac_output.runs/impl_1
 # Command line       : vivado.exe -log top.vdi -applog -product Vivado -messageDb vivado.pb -mode batch -source top.tcl -notrace
 # Log file           : C:/Users/user/Basys 3 Project Files/dac_output/dac_output.runs/impl_1/top.vdi
@@ -19,6 +19,6 @@
 # Host memory        : 16859 MB
 # Swap memory        : 12884 MB
 # Total Virtual      : 29744 MB
-# Available Virtual  : 13031 MB
+# Available Virtual  : 10585 MB
 #-----------------------------------------------------------
 source top.tcl -notrace
