@@ -56,7 +56,9 @@ if {$::dispatch::connected} {
 }
 
 OPTRACE "synth_1" START { ROLLUP_AUTO }
+set_param chipscope.maxJobs 2
 set_param general.usePosixSpawnForFork 1
+set_param xicom.use_bs_reader 1
 OPTRACE "Creating in-memory project" START { }
 create_project -in_memory -part xc7a35ticpg236-1L
 
@@ -76,7 +78,6 @@ read_verilog -library xil_defaultlib {
   {C:/Users/user/Basys 3 Project Files/dac_output/dac_output.srcs/sources_1/new/dac.v}
   {C:/Users/user/Basys 3 Project Files/dac_output/dac_output.srcs/sources_1/new/delay_timer.v}
   {C:/Users/user/Basys 3 Project Files/dac_output/dac_output.srcs/sources_1/new/display.v}
-  {C:/Users/user/Basys 3 Project Files/dac_output/dac_output.srcs/sources_1/new/uart_rx.v}
   {C:/Users/user/Basys 3 Project Files/dac_output/dac_output.srcs/sources_1/new/top.v}
 }
 OPTRACE "Adding files" END { }

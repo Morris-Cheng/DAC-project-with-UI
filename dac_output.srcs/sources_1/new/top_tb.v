@@ -1,38 +1,35 @@
 `timescale 1ns / 1ps
-//////////////////////////////////////////////////////////////////////////////////
-// Company: 
-// Engineer: 
-// 
-// Create Date: 2025/10/27 23:54:08
-// Design Name: 
-// Module Name: top_tb
-// Project Name: 
-// Target Devices: 
-// Tool Versions: 
-// Description: 
-// 
-// Dependencies: 
-// 
-// Revision:
-// Revision 0.01 - File Created
-// Additional Comments:
-// 
-//////////////////////////////////////////////////////////////////////////////////
-
 
 module top_tb();
     reg clk = 0;
     reg reset = 0;
-    reg [15:0] voltage_output = 250;
     reg dac_enable = 0;
     wire cs;
     wire sclk;
     wire d_out;
     wire busy;
+    wire LD;
     
-    //reg [15:0] received_voltage = 100;
+    reg switch250 = 0;
+    reg switch200 = 0;
+    reg switch100 = 0;
+
+    reg [15:0] received_voltage = 0;
     
-    //wire [15:0] voltage_output = received_voltage; //storing the voltage from computer to voltage output for dac
+    always @(posedge clk) begin
+        if(switch250 == 1) begin
+            received_voltage <= 250;
+        end
+        else if (switch200 == 1) begin
+            received_voltage <= 200;
+        end
+        else if (switch100 == 1) begin
+            received_voltage <= 100;
+        end
+        else begin
+            received_voltage <= 0;
+        end
+    end
 
     dac #(
         .N_tot(24),
@@ -46,7 +43,7 @@ module top_tb();
     ) dac(
         .clk(clk),
         .reset(reset),
-        .voltage_output(voltage_output),
+        .voltage_output(received_voltage),
         .dac_enable(dac_enable),
         .cs_out(cs),
         .sclk_out(sclk),
@@ -54,17 +51,17 @@ module top_tb();
         .busy_out(busy)
     );
     
+    assign LD = cs;
+    
     always #5 clk = ~clk;
     
     initial begin
-        reset = 1;
-        #10;
-        reset = 0;
-        #10;
+//        reset = 1;
+//        #10;
+//        reset = 0;
+//        #10;
         dac_enable = 1;
-        #800;
+        #2000;
         dac_enable = 0;
-        #1000;
-        dac_enable = 1;
     end
 endmodule

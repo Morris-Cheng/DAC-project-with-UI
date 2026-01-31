@@ -24,9 +24,9 @@ module dac#(
     
     localparam integer FULL_SCALE = (1 << 16);
     localparam integer INV_VREF = (1 << 24) / Vref;
-    reg [63:0] mult_stage;        // Stage 1: multiplication
-    reg [63:0] scale_stage;       // Stage 2: scaling (division replacement)
-    reg [N_tot-1:0] output_data;  // Stage 3: packed DAC frame
+    reg [63:0] mult_stage = 0;        // Stage 1: multiplication
+    reg [63:0] scale_stage = 0;       // Stage 2: scaling (division replacement)
+    reg [N_tot-1:0] output_data = 0;  // Stage 3: packed DAC frame
     
     always @(posedge clk) begin
         if (reset) begin
@@ -119,25 +119,21 @@ module dac#(
         .done(cs_end_done)
     );
     
-    
-    reg [2:0] state = 0;
-    reg [2:0] next_state = 0;
     localparam IDLE = 0;
     localparam CS_START = 1;
     localparam CONV = 2;
     localparam CONV_CONTINUE = 3;
     localparam CONV_END = 4;
+    reg [2:0] state = 0;
+    reg [2:0] next_state = 0;
     
     always @(*) begin : next_state_logic
         next_state = state;
-        sclk_clock_enable = sclk_clock_enable;
+        
         case(state)
             IDLE: begin
                 if(dac_enable_rising) begin
                     next_state = CS_START;
-                end
-                else begin
-                    next_state = next_state;
                 end
             end
             
@@ -145,28 +141,17 @@ module dac#(
                 if(cs_trigger_done) begin
                     next_state = CONV;
                 end
-                else begin
-                    next_state = next_state;
-                end
             end
             
             CONV: begin 
                 if(conv_wait_done) begin
                     next_state = CONV_CONTINUE;
-                    sclk_clock_enable = 1;
-                end
-                else begin
-                    next_state = next_state;
                 end
             end
             
             CONV_CONTINUE: begin
                 if(current_bit == 0) begin
                     next_state = CONV_END;
-                    sclk_clock_enable = 0;
-                end
-                else begin
-                    next_state = next_state;
                 end
             end
             
@@ -179,9 +164,10 @@ module dac#(
                         next_state = IDLE;
                     end
                 end
-                else begin
-                    next_state = next_state;
-                end
+            end
+            
+            default: begin
+                next_state = IDLE;
             end
         endcase
     end
@@ -198,6 +184,7 @@ module dac#(
             busy <= 0;
             d_out <= 0;
             current_bit <= N_tot;
+            sclk_clock_enable <= 0;
         end
         else begin
             if(state == CS_START) begin : CS_trigger_update
@@ -213,6 +200,7 @@ module dac#(
             end
             
             else if(state == CONV_CONTINUE) begin
+                sclk_clock_enable <= 1;
                 if(sclk_reg_rising) begin
                     if(current_bit > 0) begin
                         current_bit <= current_bit - 1;
@@ -235,6 +223,7 @@ module dac#(
                 busy <= 0;
                 d_out <= 0;
                 current_bit <= N_tot;
+                sclk_clock_enable <= 0;
             end
         end
     end

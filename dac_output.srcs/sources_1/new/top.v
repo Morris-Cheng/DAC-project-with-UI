@@ -4,35 +4,34 @@ module top(
         input  wire       clk,
         input  wire       reset,
         input  wire       dac_enable,
-        input  wire       uart_rx,
+        input  wire       switch250,
+        input  wire       switch200,
+        input  wire       switch100,
         output wire       cs,
         output wire       sclk,
         output wire       d_in,
         output wire [7:0] seg,
         output wire [3:0] an,
-        output wire [15:0] LD
+        output wire LD
     );
     
-    wire [15:0] rx_value; //input rx value from the computer
-    wire        rx_ready; //ready signal from the rx module
-        
-    uart_rx uart_rx_inst (
-        .clk(clk),
-        .i_rx(uart_rx),
-        .o_data(rx_value),
-        .o_ready(rx_ready)
-    );
+    reg [15:0] received_voltage =  0;
     
-    reg [15:0] received_voltage;
-        
-    //updating the voltage value
     always @(posedge clk) begin
-        if(rx_ready) begin
-            received_voltage <= rx_value;
+        if(switch250 == 1) begin
+            received_voltage <= 250;
+        end
+        else if (switch200 == 1) begin
+            received_voltage <= 200;
+        end
+        else if (switch100 == 1) begin
+            received_voltage <= 100;
+        end
+        else begin
+            received_voltage <= 0;
         end
     end
     
-    wire [15:0] voltage_output = 250; //storing the voltage from computer to voltage output for dac
     wire busy;
     
     dac #(
@@ -65,4 +64,6 @@ module top(
         .seg(seg),
         .an(an)
     );
+    
+    assign LD = cs;
 endmodule
