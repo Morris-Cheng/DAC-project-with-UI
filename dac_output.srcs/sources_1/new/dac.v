@@ -1,168 +1,116 @@
 `timescale 1ns / 1ps
 
 module dac#(
-        parameter N_tot   = 1, //total number of bits that needs to be send
-        parameter N_valid = 1, //total number of valid bits
+        parameter N = 1, //total number of bits that needs to be send
+        parameter CLK_PERIOD = 0,
+        parameter SCLK_PERIOD = 0,
         
         //please refer to data sheet for values
-        parameter Vref  = 1, //units: V
-        parameter tCH   = 1, //units: ns
-        parameter tCL   = 1, //units: ns
-        parameter tCSS0 = 1, //units: ns
-        parameter tCSF  = 1, //units: ns
-        parameter tSCPW = 1 //units: ns
+        parameter t10  = 0,
+        parameter t11 = 0,
+        parameter t12 = 0
     )(
-        input  wire                   clk,
-        input  wire                   reset,
-        input  wire [N_valid - 1 : 0] voltage_output,
-        input  wire                   dac_enable,
-        output wire                   cs_out,
-        output wire                   sclk_out,
-        output reg                    d_out,
-        output wire                   busy_out
+        input  wire             clk,
+        input  wire             sclk_clk,
+        input  wire             reset,
+        input  wire [N - 1 : 0] voltage_output,
+        input  wire             dac_enable,
+        output wire             cs_out,
+        output wire             sclk_out,
+        output wire             ldac_out,
+        output reg              data_out,
+        output wire             busy_out
     );
-    
-    localparam integer FULL_SCALE = (1 << 16);
-    localparam integer INV_VREF = (1 << 24) / Vref;
-    reg [63:0] mult_stage = 0;        // Stage 1: multiplication
-    reg [63:0] scale_stage = 0;       // Stage 2: scaling (division replacement)
-    reg [N_tot-1:0] output_data = 0;  // Stage 3: packed DAC frame
-    
-    always @(posedge clk) begin
-        if (reset) begin
-            mult_stage <= 0;
-        end
-        else if (busy_out == 0) begin
-            // voltage_output × full-scale constant
-            mult_stage <= voltage_output * FULL_SCALE;
-        end
-    end
-    
-    always @(posedge clk) begin
-        if (reset) begin
-            scale_stage <= 0;
-        end
-        else begin
-            // Multiply by reciprocal instead of dividing
-            scale_stage <= (mult_stage * INV_VREF) >> 24;
-        end
-    end
-    
-    always @(posedge clk) begin
-        if (reset) begin
-            output_data <= 0;
-        end
-        else begin
-            output_data <= {2'b01,
-                            scale_stage[N_valid-1:0],
-                            {(N_tot - (N_valid + 2)){1'b0}}};
-        end
-    end
     
     reg busy = 0;
-    reg cs_reg = 1; //active low to activate
+    reg cs_reg = 0; //active low to activate
+    reg sclk_reg = 0; //active low
+    reg ldac_reg = 1; //active high
     
-    reg dac_enable_d = 0;
-    wire dac_enable_rising = dac_enable & ~dac_enable_d;
-    wire cs_trigger_enable = dac_enable_rising; //raises cs to be high when dac enable rising edge detected
-    wire cs_trigger_done;
+    wire cs_pulse_enable;
+    wire cs_pulse_done;
     delay_timer #(
-        .CLOCK_CYCLE_TIME(10),
-        .DELAY_TIME(tSCPW),
+        .CLOCK_CYCLE_TIME(CLK_PERIOD),
+        .DELAY_TIME(t12 - 2*CLK_PERIOD),
         .ROUND_MODE(1)
-    ) CS_trigger(
+    ) CS_pulse_generate (
         .clk(clk),
-        .enable(cs_trigger_enable),
-        .done(cs_trigger_done)
+        .enable(cs_pulse_enable),
+        .done(cs_pulse_done)
     );
     
-    
-    wire conv_wait_enable = ~cs_reg; //conv_wait_enable triggers on the falling edge of the cs signal
-    wire conv_wait_done;
+    wire ldac_wait_enable;
+    wire ldac_wait_done;
     delay_timer #(
-        .CLOCK_CYCLE_TIME(10),
-        .DELAY_TIME(tCSS0),
-        .ROUND_MODE(1)  //set mode to round up
-    ) conversion_wait_timer(
+        .CLOCK_CYCLE_TIME(CLK_PERIOD),
+        .DELAY_TIME(t11 - 2*CLK_PERIOD),
+        .ROUND_MODE(1)
+    ) LDAC_WAIT_DELAY (
         .clk(clk),
-        .enable(conv_wait_enable),
-        .done(conv_wait_done)
+        .enable(ldac_wait_enable),
+        .done(ldac_wait_done)
     );
     
-    
-    localparam SCLK_PERIOD = tCH + tCL;
-    reg sclk_clock_enable = 0;
-    reg sclk_reg_d = 0;
-    wire sclk_reg;
-    wire sclk_reg_rising = sclk_reg && ~sclk_reg_d;
-    clock_divider #(
-        .CLOCK_CYCLE_TIME(10),
-        .NEW_CLOCK_CYCLE_TIME(SCLK_PERIOD),
-        .IDLE_STATE(0),
-        .ROUND_MODE(1)
-    ) sclk_clock(
-        .clk(clk),
-        .enable(sclk_clock_enable),
-        .divided_clk_out(sclk_reg)
-    );
-    
-    reg [$clog2(N_tot + 1) : 0] current_bit = N_tot;
-    wire cs_end_enable = (current_bit == 0);
-    wire cs_end_done;
+    wire ldac_pulse_enable = ldac_wait_done;
+    wire ldac_pulse_done;
     delay_timer #(
-        .CLOCK_CYCLE_TIME(10),
-        .DELAY_TIME(tCSF),
+        .CLOCK_CYCLE_TIME(CLK_PERIOD),
+        .DELAY_TIME(t10 - CLK_PERIOD),
         .ROUND_MODE(1)
-    ) CS_end(
+    ) LDAC_PULSE_generate (
         .clk(clk),
-        .enable(cs_end_enable),
-        .done(cs_end_done)
+        .enable(ldac_pulse_enable),
+        .done(ldac_pulse_done)
     );
     
     localparam IDLE = 0;
     localparam CS_START = 1;
     localparam CONV = 2;
-    localparam CONV_CONTINUE = 3;
-    localparam CONV_END = 4;
+    localparam CONV_END = 3;
+    localparam LDAC_WAIT = 4;
+    localparam LDAC_PULSE = 5;
+    
     reg [2:0] state = 0;
     reg [2:0] next_state = 0;
+    reg [$clog2(N + 1) : 0] current_bit = N;
     
     always @(*) begin : next_state_logic
         next_state = state;
         
         case(state)
             IDLE: begin
-                if(dac_enable_rising) begin
+                if(dac_enable) begin
                     next_state = CS_START;
                 end
             end
             
             CS_START: begin
-                if(cs_trigger_done) begin
+                if(cs_pulse_done) begin
                     next_state = CONV;
                 end
             end
             
             CONV: begin 
-                if(conv_wait_done) begin
-                    next_state = CONV_CONTINUE;
-                end
-            end
-            
-            CONV_CONTINUE: begin
                 if(current_bit == 0) begin
                     next_state = CONV_END;
                 end
             end
             
             CONV_END: begin
-                if(cs_end_done) begin
-                    if(dac_enable) begin
-                        next_state = CONV;
-                    end
-                    else begin
-                        next_state = IDLE;
-                    end
+                if(cs_reg == 1) begin
+                    next_state = LDAC_WAIT;
+                end
+            end
+            
+            LDAC_WAIT: begin
+                if(ldac_wait_done) begin
+                    next_state = LDAC_PULSE;
+                end
+            end
+            
+            LDAC_PULSE: begin
+                if(ldac_pulse_done) begin
+                    next_state = IDLE;
                 end
             end
             
@@ -172,63 +120,71 @@ module dac#(
         endcase
     end
     
-    always @(posedge clk) begin : state_register_update
-        state <= next_state;
-        dac_enable_d <= dac_enable;
-        sclk_reg_d <= sclk_reg;
-    end
+    reg [2:0] sclk_counter = 0;
+    reg full_period = 0;
+    localparam SCLK_CYCLES = SCLK_PERIOD / (2*CLK_PERIOD) - 1;
     
     always @(posedge clk) begin
         if(reset) begin
-            cs_reg <= 1;
+            cs_reg <= 0;
             busy <= 0;
-            d_out <= 0;
-            current_bit <= N_tot;
-            sclk_clock_enable <= 0;
+            sclk_reg <= 0;
+            ldac_reg <= 1;
+            data_out <= 0;
         end
         else begin
-            if(state == CS_START) begin : CS_trigger_update
-                //pulls busy indicator high to indicate busy state
+            if(state == CS_START) begin : generate_CS_pulse
                 busy <= 1;
-                //pulls cs pin high for tCSPW ns
                 cs_reg <= 1;
             end
             
-            if(state == CONV) begin : CONV_register_update
-                busy <= 1;
+            if(state == CONV) begin
                 cs_reg <= 0;
-            end
-            
-            else if(state == CONV_CONTINUE) begin
-                sclk_clock_enable <= 1;
-                if(sclk_reg_rising) begin
-                    if(current_bit > 0) begin
+                sclk_counter <= sclk_counter + 1;
+                if(sclk_counter >= SCLK_CYCLES) begin
+                    sclk_reg <= ~sclk_reg;
+                    sclk_counter <= 0;
+                    full_period <= ~full_period;
+                    if(full_period) begin
                         current_bit <= current_bit - 1;
                     end
-                    else begin
-                        current_bit <= current_bit;
+                    if(current_bit != 0) begin
+                        data_out <= voltage_output[current_bit - 1];
                     end
-                end
-                
-                if(current_bit != 0) begin
-                    d_out <= output_data[current_bit - 1];
-                end
-                else begin
-                    d_out <= 0;
+                    else begin
+                        data_out <= 0;
+                    end
                 end
             end
             
             else if(state == CONV_END) begin
+                sclk_reg <= 0;
+                sclk_counter <= 0;
+                full_period <= 0;
                 cs_reg <= 1;
+            end
+            
+            else if(state == LDAC_PULSE) begin
+                ldac_reg <= 0;
+            end
+            
+            else if(state == IDLE) begin
+                cs_reg <= 0;
                 busy <= 0;
-                d_out <= 0;
-                current_bit <= N_tot;
-                sclk_clock_enable <= 0;
+                sclk_reg <= 0;
+                ldac_reg <= 1;
+                data_out <= 0;
+                current_bit <= N;
             end
         end
+        
+        state <= next_state;
     end
     
+    assign ldac_wait_enable = state == LDAC_WAIT;
+    assign cs_pulse_enable = state == CS_START;
     assign busy_out = busy;
-    assign sclk_out = sclk_reg;
     assign cs_out = cs_reg;
+    assign ldac_out = ldac_reg;
+    assign sclk_out = sclk_reg;
 endmodule

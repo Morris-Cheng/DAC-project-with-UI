@@ -1,6 +1,5 @@
 # compile verilog/system verilog design source files
-verilog xil_defaultlib  --include "../../../../../../../../Xilinx/2025.1/Vivado/data/rsb/busdef" \
-"../../../../dac_output.srcs/sources_1/new/clock_divider.v" \
+verilog xil_defaultlib  --include "../../../../../../../../Xilinx/2025.1/Vivado/data/rsb/busdef" --include "../../../../dac_output.ip_user_files/ipstatic" \
 "../../../../dac_output.srcs/sources_1/new/dac.v" \
 "../../../../dac_output.srcs/sources_1/new/delay_timer.v" \
 "../../../../dac_output.srcs/sources_1/new/top_tb.v" \
