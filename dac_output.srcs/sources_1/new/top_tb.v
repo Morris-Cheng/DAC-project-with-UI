@@ -10,19 +10,20 @@ module top_tb();
     wire ldac;
     wire data_out;
     wire busy;
-    reg [15:0] received_voltage = 16'hC33C;
+    reg [15:0] received_voltage = 16'hFFFF;
 
     dac #(
         .N(16),
         .CLK_PERIOD(5),
         .SCLK_PERIOD(20),
+        .t8(10),
         .t10(20),
         .t11(10),
         .t12(15)
     ) dac(
         .clk(clk),
-        .sclk_clk(sclk_clk),
         .reset(reset),
+        .locked(1),
         .voltage_output(received_voltage),
         .dac_enable(dac_enable),
         .cs_out(cs),

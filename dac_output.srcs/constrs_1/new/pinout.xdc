@@ -14,6 +14,9 @@ set_property IOSTANDARD LVCMOS33 [get_ports cs]
 set_property PACKAGE_PIN A16 [get_ports d_in]
 set_property IOSTANDARD LVCMOS33 [get_ports d_in]
 
+set_property PACKAGE_PIN B15 [get_ports ldac]
+set_property IOSTANDARD LVCMOS33 [get_ports ldac]
+
 set_property PACKAGE_PIN B16 [get_ports sclk]
 set_property IOSTANDARD LVCMOS33 [get_ports sclk]
 

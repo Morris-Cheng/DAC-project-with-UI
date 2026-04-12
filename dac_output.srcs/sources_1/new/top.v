@@ -10,19 +10,33 @@ module top(
         output wire       cs,
         output wire       sclk,
         output wire       d_in,
+        output wire       ldac,
         output wire [7:0] seg,
         output wire [3:0] an,
         output wire LD
     );
     
-    reg [15:0] received_voltage =  0;
+    wire busy;
+    wire clk_200Mhz;
+    wire locked;
+    clk_wiz_0 clock_wizard
+    (
+        // Clock out ports
+        .clk_out1(clk_200Mhz),     // output clk_out1
+        // Status and control signals
+        .reset(reset), // input reset
+        .locked(locked),       // output locked
+       // Clock in ports
+        .clk_in1(clk)      // input clk_in1
+    );
     
+    reg [15:0] received_voltage =  0;
     always @(posedge clk) begin
         if(switch250 == 1) begin
             received_voltage <= 250;
         end
         else if (switch200 == 1) begin
-            received_voltage <= 200;
+            received_voltage <= 125;
         end
         else if (switch100 == 1) begin
             received_voltage <= 100;
@@ -32,25 +46,35 @@ module top(
         end
     end
     
-    wire busy;
+    reg [15:0] dac_out = 0;
+    reg [15:0] dac_output = 0;
+    reg [23:0] intermediate = 0;
+    always @(posedge clk) begin
+        // Step 1: Multiply input by the 16-bit max value (65535)
+        intermediate <= received_voltage * 16'hFFFF;
+        
+        // Step 2: Divide by your maximum input scale (250)
+        dac_out <= (intermediate * 262) >> 16;
+        dac_output <= dac_out;
+    end
     
     dac #(
-        .N_tot(24),
-        .N_valid(16),
-        .Vref(250),
-        .tCH(15),
-        .tCL(15),
-        .tCSS0(8),
-        .tCSF(100),
-        .tSCPW(20)
+        .N(16),
+        .CLK_PERIOD(5),
+        .SCLK_PERIOD(20),
+        .t10(20),
+        .t11(10),
+        .t12(15)
     ) dac(
         .clk(clk),
         .reset(reset),
-        .voltage_output(received_voltage),
+        .locked(locked),
+        .voltage_output(dac_output),
         .dac_enable(dac_enable),
         .cs_out(cs),
         .sclk_out(sclk),
-        .d_out(d_in),
+        .ldac_out(ldac),
+        .data_out(d_in),
         .busy_out(busy)
     );
     

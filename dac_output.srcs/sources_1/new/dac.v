@@ -6,13 +6,14 @@ module dac#(
         parameter SCLK_PERIOD = 0,
         
         //please refer to data sheet for values
+        parameter t8 = 0,
         parameter t10  = 0,
         parameter t11 = 0,
         parameter t12 = 0
     )(
         input  wire             clk,
-        input  wire             sclk_clk,
         input  wire             reset,
+        input  wire             locked,
         input  wire [N - 1 : 0] voltage_output,
         input  wire             dac_enable,
         output wire             cs_out,
@@ -24,7 +25,7 @@ module dac#(
     
     reg busy = 0;
     reg cs_reg = 0; //active low to activate
-    reg sclk_reg = 0; //active low
+    reg sclk_reg = 1; //active high
     reg ldac_reg = 1; //active high
     
     wire cs_pulse_enable;
@@ -37,6 +38,18 @@ module dac#(
         .clk(clk),
         .enable(cs_pulse_enable),
         .done(cs_pulse_done)
+    );
+    
+    wire data_hold_enable;
+    wire data_hold_done;
+    delay_timer #(
+        .CLOCK_CYCLE_TIME(CLK_PERIOD),
+        .DELAY_TIME(t8),
+        .ROUND_MODE(1)
+    ) data_hold (
+        .clk(clk),
+        .enable(data_hold_enable),
+        .done(data_hold_done)
     );
     
     wire ldac_wait_enable;
@@ -65,10 +78,11 @@ module dac#(
     
     localparam IDLE = 0;
     localparam CS_START = 1;
-    localparam CONV = 2;
-    localparam CONV_END = 3;
-    localparam LDAC_WAIT = 4;
-    localparam LDAC_PULSE = 5;
+    localparam DATA_HOLD = 2;
+    localparam CONV = 3;
+    localparam CONV_END = 4;
+    localparam LDAC_WAIT = 5;
+    localparam LDAC_PULSE = 6;
     
     reg [2:0] state = 0;
     reg [2:0] next_state = 0;
@@ -79,13 +93,19 @@ module dac#(
         
         case(state)
             IDLE: begin
-                if(dac_enable) begin
+                if(dac_enable & locked) begin
                     next_state = CS_START;
                 end
             end
             
             CS_START: begin
                 if(cs_pulse_done) begin
+                    next_state = CONV;
+                end
+            end
+            
+            DATA_HOLD: begin
+                if(data_hold_done) begin
                     next_state = CONV;
                 end
             end
@@ -128,7 +148,7 @@ module dac#(
         if(reset) begin
             cs_reg <= 0;
             busy <= 0;
-            sclk_reg <= 0;
+            sclk_reg <= 1;
             ldac_reg <= 1;
             data_out <= 0;
         end
@@ -136,6 +156,11 @@ module dac#(
             if(state == CS_START) begin : generate_CS_pulse
                 busy <= 1;
                 cs_reg <= 1;
+            end
+            
+            if(state == DATA_HOLD) begin
+                cs_reg <= 0;
+                data_out <= voltage_output[N - 1];
             end
             
             if(state == CONV) begin
@@ -158,7 +183,7 @@ module dac#(
             end
             
             else if(state == CONV_END) begin
-                sclk_reg <= 0;
+                sclk_reg <= 1;
                 sclk_counter <= 0;
                 full_period <= 0;
                 cs_reg <= 1;
@@ -171,7 +196,7 @@ module dac#(
             else if(state == IDLE) begin
                 cs_reg <= 0;
                 busy <= 0;
-                sclk_reg <= 0;
+                sclk_reg <= 1;
                 ldac_reg <= 1;
                 data_out <= 0;
                 current_bit <= N;
@@ -183,6 +208,7 @@ module dac#(
     
     assign ldac_wait_enable = state == LDAC_WAIT;
     assign cs_pulse_enable = state == CS_START;
+    assign data_hold_enable = state == DATA_HOLD;
     assign busy_out = busy;
     assign cs_out = cs_reg;
     assign ldac_out = ldac_reg;
