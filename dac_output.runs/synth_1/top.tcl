@@ -56,7 +56,10 @@ if {$::dispatch::connected} {
 }
 
 OPTRACE "synth_1" START { ROLLUP_AUTO }
+set_param tcl.statsThreshold 360
+set_param chipscope.maxJobs 2
 set_param general.usePosixSpawnForFork 1
+set_param xicom.use_bs_reader 1
 OPTRACE "Creating in-memory project" START { }
 create_project -in_memory -part xc7a35ticpg236-1L
 
@@ -83,6 +86,7 @@ read_ip -quiet {{C:/Users/user/Basys 3 Project Files/dac_output/dac_output.srcs/
 set_property used_in_implementation false [get_files -all {{c:/Users/user/Basys 3 Project Files/dac_output/dac_output.gen/sources_1/ip/clk_wiz_0_1/clk_wiz_0_board.xdc}}]
 set_property used_in_implementation false [get_files -all {{c:/Users/user/Basys 3 Project Files/dac_output/dac_output.gen/sources_1/ip/clk_wiz_0_1/clk_wiz_0.xdc}}]
 set_property used_in_implementation false [get_files -all {{c:/Users/user/Basys 3 Project Files/dac_output/dac_output.gen/sources_1/ip/clk_wiz_0_1/clk_wiz_0_ooc.xdc}}]
+set_property used_in_implementation false [get_files -all {{c:/Users/user/Basys 3 Project Files/dac_output/dac_output.gen/sources_1/ip/clk_wiz_0_1/clk_wiz_0_late.xdc}}]
 
 OPTRACE "Adding files" END { }
 # Mark all dcp files as not used in implementation to prevent them from being

@@ -12,8 +12,7 @@ module top(
         output wire       d_in,
         output wire       ldac,
         output wire [7:0] seg,
-        output wire [3:0] an,
-        output wire LD
+        output wire [3:0] an
     );
     
     wire busy;
@@ -88,6 +87,4 @@ module top(
         .seg(seg),
         .an(an)
     );
-    
-    assign LD = cs;
 endmodule

@@ -84,7 +84,8 @@ module dac#(
     localparam LDAC_WAIT = 5;
     localparam LDAC_PULSE = 6;
     
-    reg [2:0] state = 0;
+    
+    (* fsm_safe_state = "reset_state" *) reg [2:0] state = IDLE;
     reg [2:0] next_state = 0;
     reg [$clog2(N + 1) : 0] current_bit = N;
     
@@ -151,6 +152,7 @@ module dac#(
             sclk_reg <= 1;
             ldac_reg <= 1;
             data_out <= 0;
+            state <= IDLE;
         end
         else begin
             if(state == CS_START) begin : generate_CS_pulse
@@ -201,9 +203,9 @@ module dac#(
                 data_out <= 0;
                 current_bit <= N;
             end
+            
+            state <= next_state; //only updates state when not in reset
         end
-        
-        state <= next_state;
     end
     
     assign ldac_wait_enable = state == LDAC_WAIT;

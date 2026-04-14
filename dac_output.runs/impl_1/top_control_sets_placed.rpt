@@ -1,7 +1,7 @@
 Copyright 1986-2022 Xilinx, Inc. All Rights Reserved. Copyright 2022-2025 Advanced Micro Devices, Inc. All Rights Reserved.
 ---------------------------------------------------------------------------------------------------------------------------------------------
 | Tool Version : Vivado v.2025.1 (win64) Build 6140274 Thu May 22 00:12:29 MDT 2025
-| Date         : Sat Apr 11 19:57:03 2026
+| Date         : Mon Apr 13 17:28:14 2026
 | Host         : LAPTOP-DSFFK1DP running 64-bit major release  (build 9200)
 | Command      : report_control_sets -verbose -file top_control_sets_placed.rpt
 | Design       : top
@@ -27,7 +27,7 @@ Table of Contents
 |    Minimum number of control sets                        |     6 |
 |    Addition due to synthesis replication                 |     0 |
 |    Addition due to physical synthesis replication        |     0 |
-| Unused register locations in slices containing registers |    27 |
+| Unused register locations in slices containing registers |    29 |
 +----------------------------------------------------------+-------+
 * Control sets can be merged at opt_design using control_set_merge or merge_equivalent_drivers
 ** Run report_qor_suggestions for automated merging and remapping suggestions
@@ -41,8 +41,8 @@ Table of Contents
 +--------------------+-------+
 | Total control sets |     6 |
 | >= 0 to < 4        |     2 |
-| >= 4 to < 6        |     0 |
-| >= 6 to < 8        |     2 |
+| >= 4 to < 6        |     1 |
+| >= 6 to < 8        |     1 |
 | >= 8 to < 10       |     0 |
 | >= 10 to < 12      |     0 |
 | >= 12 to < 14      |     0 |
@@ -61,9 +61,9 @@ Table of Contents
 | No           | No                    | No                     |              22 |            9 |
 | No           | No                    | Yes                    |               0 |            0 |
 | No           | Yes                   | No                     |              17 |            5 |
-| Yes          | No                    | No                     |               7 |            3 |
+| Yes          | No                    | No                     |               1 |            1 |
 | Yes          | No                    | Yes                    |               0 |            0 |
-| Yes          | Yes                   | No                     |               7 |            3 |
+| Yes          | Yes                   | No                     |              11 |            5 |
 +--------------+-----------------------+------------------------+-----------------+--------------+
 
 
@@ -75,7 +75,7 @@ Table of Contents
 +----------------+----------------------------+---------------------------------------+------------------+----------------+--------------+
 |  clk_IBUF_BUFG | dac/ldac_reg_i_1_n_0       | reset_IBUF                            |                1 |              1 |         1.00 |
 |  clk_IBUF_BUFG | dac/data_out_i_1_n_0       |                                       |                1 |              1 |         1.00 |
-|  clk_IBUF_BUFG | dac/LDAC_WAIT_DELAY/E[0]   |                                       |                2 |              6 |         3.00 |
+|  clk_IBUF_BUFG | dac/LDAC_WAIT_DELAY/E[0]   | reset_IBUF                            |                2 |              4 |         2.00 |
 |  clk_IBUF_BUFG | dac/current_bit[5]_i_2_n_0 | dac/current_bit[5]_i_1_n_0            |                2 |              6 |         3.00 |
 |  clk_IBUF_BUFG |                            | display_inst/digit_counter[0]_i_1_n_0 |                5 |             17 |         3.40 |
 |  clk_IBUF_BUFG |                            |                                       |                9 |             22 |         2.44 |

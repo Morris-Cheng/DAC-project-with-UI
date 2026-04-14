@@ -2,7 +2,7 @@
 // Copyright 2022-2025 Advanced Micro Devices, Inc. All Rights Reserved.
 // --------------------------------------------------------------------------------
 // Tool Version: Vivado v.2025.1 (win64) Build 6140274 Thu May 22 00:12:29 MDT 2025
-// Date        : Thu Apr  2 22:33:22 2026
+// Date        : Mon Apr 13 16:45:20 2026
 // Host        : LAPTOP-DSFFK1DP running 64-bit major release  (build 9200)
 // Command     : write_verilog -force -mode funcsim {c:/Users/user/Basys 3 Project
 //               Files/dac_output/dac_output.gen/sources_1/ip/clk_wiz_0_1/clk_wiz_0_sim_netlist.v}
@@ -24,7 +24,7 @@ module clk_wiz_0
   output locked;
   input clk_in1;
 
-  (* IBUF_LOW_PWR *) wire clk_in1;
+  wire clk_in1;
   wire clk_out1;
   wire locked;
   wire reset;
@@ -47,7 +47,6 @@ module clk_wiz_0_clk_wiz
   input clk_in1;
 
   wire clk_in1;
-  wire clk_in1_clk_wiz_0;
   wire clk_out1;
   wire clk_out1_clk_wiz_0;
   wire clkfbout_buf_clk_wiz_0;
@@ -75,15 +74,6 @@ module clk_wiz_0_clk_wiz
   BUFG clkf_buf
        (.I(clkfbout_clk_wiz_0),
         .O(clkfbout_buf_clk_wiz_0));
-  (* BOX_TYPE = "PRIMITIVE" *) 
-  (* CAPACITANCE = "DONT_CARE" *) 
-  (* IBUF_DELAY_VALUE = "0" *) 
-  (* IFD_DELAY_VALUE = "AUTO" *) 
-  IBUF #(
-    .IOSTANDARD("DEFAULT")) 
-    clkin1_ibufg
-       (.I(clk_in1),
-        .O(clk_in1_clk_wiz_0));
   (* BOX_TYPE = "PRIMITIVE" *) 
   BUFG clkout1_buf
        (.I(clk_out1_clk_wiz_0),
@@ -143,7 +133,7 @@ module clk_wiz_0_clk_wiz
         .CLKFBOUT(clkfbout_clk_wiz_0),
         .CLKFBOUTB(NLW_mmcm_adv_inst_CLKFBOUTB_UNCONNECTED),
         .CLKFBSTOPPED(NLW_mmcm_adv_inst_CLKFBSTOPPED_UNCONNECTED),
-        .CLKIN1(clk_in1_clk_wiz_0),
+        .CLKIN1(clk_in1),
         .CLKIN2(1'b0),
         .CLKINSEL(1'b1),
         .CLKINSTOPPED(NLW_mmcm_adv_inst_CLKINSTOPPED_UNCONNECTED),

@@ -2,7 +2,7 @@
 -- Copyright 2022-2025 Advanced Micro Devices, Inc. All Rights Reserved.
 -- --------------------------------------------------------------------------------
 -- Tool Version: Vivado v.2025.1 (win64) Build 6140274 Thu May 22 00:12:29 MDT 2025
--- Date        : Thu Apr  2 22:33:22 2026
+-- Date        : Mon Apr 13 16:45:20 2026
 -- Host        : LAPTOP-DSFFK1DP running 64-bit major release  (build 9200)
 -- Command     : write_vhdl -force -mode synth_stub {c:/Users/user/Basys 3 Project
 --               Files/dac_output/dac_output.gen/sources_1/ip/clk_wiz_0_1/clk_wiz_0_stub.vhdl}

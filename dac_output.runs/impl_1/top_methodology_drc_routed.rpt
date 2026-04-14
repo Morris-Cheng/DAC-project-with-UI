@@ -1,7 +1,7 @@
 Copyright 1986-2022 Xilinx, Inc. All Rights Reserved. Copyright 2022-2025 Advanced Micro Devices, Inc. All Rights Reserved.
 -----------------------------------------------------------------------------------------------------------------------------------------------
 | Tool Version : Vivado v.2025.1 (win64) Build 6140274 Thu May 22 00:12:29 MDT 2025
-| Date         : Sat Apr 11 19:57:39 2026
+| Date         : Mon Apr 13 17:28:41 2026
 | Host         : LAPTOP-DSFFK1DP running 64-bit major release  (build 9200)
 | Command      : report_methodology -file top_methodology_drc_routed.rpt -pb top_methodology_drc_routed.pb -rpx top_methodology_drc_routed.rpx
 | Design       : top
@@ -23,28 +23,16 @@ Table of Contents
           Floorplan: design_1
       Design limits: <entire design considered>
              Max checks: <unlimited>
-             Checks found: 27
-+-----------+------------------+----------------------------------------------------+--------+
-| Rule      | Severity         | Description                                        | Checks |
-+-----------+------------------+----------------------------------------------------+--------+
-| TIMING-4  | Critical Warning | Invalid primary clock redefinition on a clock tree | 1      |
-| TIMING-27 | Critical Warning | Invalid primary clock on hierarchical pin          | 1      |
-| SYNTH-9   | Warning          | Small multiplier                                   | 3      |
-| TIMING-18 | Warning          | Missing input or output delay                      | 22     |
-+-----------+------------------+----------------------------------------------------+--------+
+             Checks found: 7
++-----------+----------+-------------------------------+--------+
+| Rule      | Severity | Description                   | Checks |
++-----------+----------+-------------------------------+--------+
+| SYNTH-9   | Warning  | Small multiplier              | 3      |
+| TIMING-18 | Warning  | Missing input or output delay | 4      |
++-----------+----------+-------------------------------+--------+
 
 2. REPORT DETAILS
 -----------------
-TIMING-4#1 Critical Warning
-Invalid primary clock redefinition on a clock tree  
-Invalid clock redefinition on a clock tree. The primary clock clock_wizard/inst/clk_in1 is defined downstream of clock sys_clk and overrides its insertion delay and/or waveform definition
-Related violations: <none>
-
-TIMING-27#1 Critical Warning
-Invalid primary clock on hierarchical pin  
-A primary clock clock_wizard/inst/clk_in1 is created on an inappropriate internal pin clock_wizard/inst/clk_in1. It is not recommended to create a primary clock on a hierarchical pin when its driver pin has a fanout connected to multiple clock pins
-Related violations: <none>
-
 SYNTH-9#1 Warning
 Small multiplier  
 Detected multiplier at display_inst/seg_OBUF[5]_inst_i_33 of size 16x4, it is implemented as LUTs due to its small size. To force the multiplier onto a DSP block, use the USE_DSP48 attribute.
@@ -62,112 +50,22 @@ Related violations: <none>
 
 TIMING-18#1 Warning
 Missing input or output delay  
-An input delay is missing on dac_enable relative to the rising and/or falling clock edge(s) of sys_clk.
+An output delay is missing on cs relative to the rising and/or falling clock edge(s) of clk.
 Related violations: <none>
 
 TIMING-18#2 Warning
 Missing input or output delay  
-An input delay is missing on reset relative to the rising and/or falling clock edge(s) of sys_clk.
+An output delay is missing on d_in relative to the rising and/or falling clock edge(s) of clk.
 Related violations: <none>
 
 TIMING-18#3 Warning
 Missing input or output delay  
-An input delay is missing on switch100 relative to the rising and/or falling clock edge(s) of sys_clk.
+An output delay is missing on ldac relative to the rising and/or falling clock edge(s) of clk.
 Related violations: <none>
 
 TIMING-18#4 Warning
 Missing input or output delay  
-An input delay is missing on switch200 relative to the rising and/or falling clock edge(s) of sys_clk.
-Related violations: <none>
-
-TIMING-18#5 Warning
-Missing input or output delay  
-An input delay is missing on switch250 relative to the rising and/or falling clock edge(s) of sys_clk.
-Related violations: <none>
-
-TIMING-18#6 Warning
-Missing input or output delay  
-An output delay is missing on LD relative to the rising and/or falling clock edge(s) of sys_clk.
-Related violations: <none>
-
-TIMING-18#7 Warning
-Missing input or output delay  
-An output delay is missing on an[0] relative to the rising and/or falling clock edge(s) of sys_clk.
-Related violations: <none>
-
-TIMING-18#8 Warning
-Missing input or output delay  
-An output delay is missing on an[1] relative to the rising and/or falling clock edge(s) of sys_clk.
-Related violations: <none>
-
-TIMING-18#9 Warning
-Missing input or output delay  
-An output delay is missing on an[2] relative to the rising and/or falling clock edge(s) of sys_clk.
-Related violations: <none>
-
-TIMING-18#10 Warning
-Missing input or output delay  
-An output delay is missing on an[3] relative to the rising and/or falling clock edge(s) of sys_clk.
-Related violations: <none>
-
-TIMING-18#11 Warning
-Missing input or output delay  
-An output delay is missing on cs relative to the rising and/or falling clock edge(s) of sys_clk.
-Related violations: <none>
-
-TIMING-18#12 Warning
-Missing input or output delay  
-An output delay is missing on d_in relative to the rising and/or falling clock edge(s) of sys_clk.
-Related violations: <none>
-
-TIMING-18#13 Warning
-Missing input or output delay  
-An output delay is missing on ldac relative to the rising and/or falling clock edge(s) of sys_clk.
-Related violations: <none>
-
-TIMING-18#14 Warning
-Missing input or output delay  
-An output delay is missing on sclk relative to the rising and/or falling clock edge(s) of sys_clk.
-Related violations: <none>
-
-TIMING-18#15 Warning
-Missing input or output delay  
-An output delay is missing on seg[0] relative to the rising and/or falling clock edge(s) of sys_clk.
-Related violations: <none>
-
-TIMING-18#16 Warning
-Missing input or output delay  
-An output delay is missing on seg[1] relative to the rising and/or falling clock edge(s) of sys_clk.
-Related violations: <none>
-
-TIMING-18#17 Warning
-Missing input or output delay  
-An output delay is missing on seg[2] relative to the rising and/or falling clock edge(s) of sys_clk.
-Related violations: <none>
-
-TIMING-18#18 Warning
-Missing input or output delay  
-An output delay is missing on seg[3] relative to the rising and/or falling clock edge(s) of sys_clk.
-Related violations: <none>
-
-TIMING-18#19 Warning
-Missing input or output delay  
-An output delay is missing on seg[4] relative to the rising and/or falling clock edge(s) of sys_clk.
-Related violations: <none>
-
-TIMING-18#20 Warning
-Missing input or output delay  
-An output delay is missing on seg[5] relative to the rising and/or falling clock edge(s) of sys_clk.
-Related violations: <none>
-
-TIMING-18#21 Warning
-Missing input or output delay  
-An output delay is missing on seg[6] relative to the rising and/or falling clock edge(s) of sys_clk.
-Related violations: <none>
-
-TIMING-18#22 Warning
-Missing input or output delay  
-An output delay is missing on seg[7] relative to the rising and/or falling clock edge(s) of sys_clk.
+An output delay is missing on sclk relative to the rising and/or falling clock edge(s) of clk.
 Related violations: <none>
 
 

@@ -1,7 +1,7 @@
 Copyright 1986-2022 Xilinx, Inc. All Rights Reserved. Copyright 2022-2025 Advanced Micro Devices, Inc. All Rights Reserved.
 ---------------------------------------------------------------------------------------------------------------------------------------------
 | Tool Version : Vivado v.2025.1 (win64) Build 6140274 Thu May 22 00:12:29 MDT 2025
-| Date         : Thu Apr  2 22:33:22 2026
+| Date         : Mon Apr 13 16:45:20 2026
 | Host         : LAPTOP-DSFFK1DP running 64-bit major release  (build 9200)
 | Command      : report_utilization -file clk_wiz_0_utilization_synth.rpt -pb clk_wiz_0_utilization_synth.pb
 | Design       : clk_wiz_0
@@ -93,7 +93,7 @@ Warning! For any ECO changes, please run place_design if there are unplaced inst
 +-----------------------------+------+-------+------------+-----------+-------+
 |          Site Type          | Used | Fixed | Prohibited | Available | Util% |
 +-----------------------------+------+-------+------------+-----------+-------+
-| Bonded IOB                  |    1 |     0 |          0 |       106 |  0.94 |
+| Bonded IOB                  |    0 |     0 |          0 |       106 |  0.00 |
 | Bonded IPADs                |    0 |     0 |          0 |        10 |  0.00 |
 | Bonded OPADs                |    0 |     0 |          0 |         4 |  0.00 |
 | PHY_CONTROL                 |    0 |     0 |          0 |         5 |  0.00 |
@@ -154,7 +154,6 @@ Warning! For any ECO changes, please run place_design if there are unplaced inst
 +------------+------+---------------------+
 | BUFG       |    2 |               Clock |
 | MMCME2_ADV |    1 |               Clock |
-| IBUF       |    1 |                  IO |
 +------------+------+---------------------+
 
 

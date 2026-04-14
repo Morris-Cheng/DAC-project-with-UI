@@ -2,7 +2,7 @@
 -- Copyright 2022-2025 Advanced Micro Devices, Inc. All Rights Reserved.
 -- --------------------------------------------------------------------------------
 -- Tool Version: Vivado v.2025.1 (win64) Build 6140274 Thu May 22 00:12:29 MDT 2025
--- Date        : Thu Apr  2 22:33:22 2026
+-- Date        : Mon Apr 13 16:45:20 2026
 -- Host        : LAPTOP-DSFFK1DP running 64-bit major release  (build 9200)
 -- Command     : write_vhdl -force -mode funcsim {c:/Users/user/Basys 3 Project
 --               Files/dac_output/dac_output.gen/sources_1/ip/clk_wiz_0_1/clk_wiz_0_sim_netlist.vhdl}
@@ -25,7 +25,6 @@ entity clk_wiz_0_clk_wiz is
 end clk_wiz_0_clk_wiz;
 
 architecture STRUCTURE of clk_wiz_0_clk_wiz is
-  signal clk_in1_clk_wiz_0 : STD_LOGIC;
   signal clk_out1_clk_wiz_0 : STD_LOGIC;
   signal clkfbout_buf_clk_wiz_0 : STD_LOGIC;
   signal clkfbout_clk_wiz_0 : STD_LOGIC;
@@ -47,13 +46,6 @@ architecture STRUCTURE of clk_wiz_0_clk_wiz is
   signal NLW_mmcm_adv_inst_DO_UNCONNECTED : STD_LOGIC_VECTOR ( 15 downto 0 );
   attribute BOX_TYPE : string;
   attribute BOX_TYPE of clkf_buf : label is "PRIMITIVE";
-  attribute BOX_TYPE of clkin1_ibufg : label is "PRIMITIVE";
-  attribute CAPACITANCE : string;
-  attribute CAPACITANCE of clkin1_ibufg : label is "DONT_CARE";
-  attribute IBUF_DELAY_VALUE : string;
-  attribute IBUF_DELAY_VALUE of clkin1_ibufg : label is "0";
-  attribute IFD_DELAY_VALUE : string;
-  attribute IFD_DELAY_VALUE of clkin1_ibufg : label is "AUTO";
   attribute BOX_TYPE of clkout1_buf : label is "PRIMITIVE";
   attribute BOX_TYPE of mmcm_adv_inst : label is "PRIMITIVE";
 begin
@@ -61,14 +53,6 @@ clkf_buf: unisim.vcomponents.BUFG
      port map (
       I => clkfbout_clk_wiz_0,
       O => clkfbout_buf_clk_wiz_0
-    );
-clkin1_ibufg: unisim.vcomponents.IBUF
-    generic map(
-      IOSTANDARD => "DEFAULT"
-    )
-        port map (
-      I => clk_in1,
-      O => clk_in1_clk_wiz_0
     );
 clkout1_buf: unisim.vcomponents.BUFG
      port map (
@@ -131,7 +115,7 @@ mmcm_adv_inst: unisim.vcomponents.MMCME2_ADV
       CLKFBOUT => clkfbout_clk_wiz_0,
       CLKFBOUTB => NLW_mmcm_adv_inst_CLKFBOUTB_UNCONNECTED,
       CLKFBSTOPPED => NLW_mmcm_adv_inst_CLKFBSTOPPED_UNCONNECTED,
-      CLKIN1 => clk_in1_clk_wiz_0,
+      CLKIN1 => clk_in1,
       CLKIN2 => '0',
       CLKINSEL => '1',
       CLKINSTOPPED => NLW_mmcm_adv_inst_CLKINSTOPPED_UNCONNECTED,
