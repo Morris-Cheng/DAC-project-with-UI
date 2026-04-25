@@ -1,7 +1,7 @@
 Copyright 1986-2022 Xilinx, Inc. All Rights Reserved. Copyright 2022-2025 Advanced Micro Devices, Inc. All Rights Reserved.
 -------------------------------------------------------------------------------------------------------------------------------------------------
 | Tool Version     : Vivado v.2025.1 (win64) Build 6140274 Thu May 22 00:12:29 MDT 2025
-| Date             : Mon Apr 13 17:28:41 2026
+| Date             : Sat Apr 25 16:35:35 2026
 | Host             : LAPTOP-DSFFK1DP running 64-bit major release  (build 9200)
 | Command          : report_power -file top_power_routed.rpt -pb top_power_summary_routed.pb -rpx top_power_routed.rpx
 | Design           : top
@@ -30,10 +30,10 @@ Table of Contents
 ----------
 
 +--------------------------+--------------+
-| Total On-Chip Power (W)  | 0.249        |
+| Total On-Chip Power (W)  | 0.248        |
 | Design Power Budget (W)  | Unspecified* |
 | Power Budget Margin (W)  | NA           |
-| Dynamic (W)              | 0.187        |
+| Dynamic (W)              | 0.186        |
 | Device Static (W)        | 0.062        |
 | Effective TJA (C/W)      | 5.0          |
 | Max Ambient (C)          | 98.8         |
@@ -52,19 +52,19 @@ Table of Contents
 +----------------+-----------+----------+-----------+-----------------+
 | On-Chip        | Power (W) | Used     | Available | Utilization (%) |
 +----------------+-----------+----------+-----------+-----------------+
-| Clocks         |     0.002 |        4 |       --- |             --- |
-| Slice Logic    |     0.028 |     2072 |       --- |             --- |
-|   LUT as Logic |     0.026 |     1382 |     20800 |            6.64 |
+| Clocks         |     0.001 |        4 |       --- |             --- |
+| Slice Logic    |     0.028 |     2075 |       --- |             --- |
+|   LUT as Logic |     0.026 |     1385 |     20800 |            6.66 |
 |   CARRY4       |     0.002 |      294 |      8150 |            3.61 |
-|   Register     |    <0.001 |       51 |     41600 |            0.12 |
+|   Register     |    <0.001 |       52 |     41600 |            0.13 |
 |   F7/F8 Muxes  |    <0.001 |        3 |     32600 |           <0.01 |
 |   Others       |     0.000 |       16 |       --- |             --- |
-| Signals        |     0.026 |     1733 |       --- |             --- |
+| Signals        |     0.025 |     1735 |       --- |             --- |
 | MMCM           |     0.105 |        1 |         5 |           20.00 |
 | DSPs           |     0.002 |        2 |        90 |            2.22 |
 | I/O            |     0.024 |       22 |       106 |           20.75 |
 | Static Power   |     0.062 |          |           |                 |
-| Total          |     0.249 |          |           |                 |
+| Total          |     0.248 |          |           |                 |
 +----------------+-----------+----------+-----------+-----------------+
 
 
@@ -74,7 +74,7 @@ Table of Contents
 +-----------+-------------+-----------+-------------+------------+-------------+-------------+------------+
 | Source    | Voltage (V) | Total (A) | Dynamic (A) | Static (A) | Powerup (A) | Budget (A)  | Margin (A) |
 +-----------+-------------+-----------+-------------+------------+-------------+-------------+------------+
-| Vccint    |       0.950 |     0.067 |       0.061 |      0.006 |       NA    | Unspecified | NA         |
+| Vccint    |       0.950 |     0.066 |       0.060 |      0.006 |       NA    | Unspecified | NA         |
 | Vccaux    |       1.800 |     0.071 |       0.059 |      0.011 |       NA    | Unspecified | NA         |
 | Vcco33    |       3.300 |     0.008 |       0.007 |      0.001 |       NA    | Unspecified | NA         |
 | Vcco25    |       2.500 |     0.000 |       0.000 |      0.000 |       NA    | Unspecified | NA         |
@@ -144,10 +144,10 @@ Table of Contents
 +----------------+-----------+
 | Name           | Power (W) |
 +----------------+-----------+
-| top            |     0.187 |
+| top            |     0.186 |
 |   clock_wizard |     0.106 |
 |     inst       |     0.106 |
-|   display_inst |     0.054 |
+|   display_inst |     0.053 |
 +----------------+-----------+
 
 

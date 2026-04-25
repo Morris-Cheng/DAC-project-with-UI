@@ -2,7 +2,6 @@
 
 module top_tb();
     reg clk = 0;
-    reg sclk_clk = 0;
     reg reset = 0;
     reg dac_enable = 0;
     wire cs;
@@ -34,7 +33,6 @@ module top_tb();
     );
     
     always #2.5 clk = ~clk;
-    always #10 sclk_clk = ~sclk_clk;
     
     initial begin
         reset = 1;

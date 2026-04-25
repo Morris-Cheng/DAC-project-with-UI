@@ -142,8 +142,7 @@ module dac#(
     end
     
     reg [2:0] sclk_counter = 0;
-    reg full_period = 0;
-    localparam SCLK_CYCLES = SCLK_PERIOD / (2*CLK_PERIOD) - 1;
+    localparam SCLK_CYCLES = SCLK_PERIOD / (2*CLK_PERIOD);
     
     always @(posedge clk) begin
         if(reset) begin
@@ -168,11 +167,10 @@ module dac#(
             if(state == CONV) begin
                 cs_reg <= 0;
                 sclk_counter <= sclk_counter + 1;
-                if(sclk_counter >= SCLK_CYCLES) begin
+                if(sclk_counter + 1 >= SCLK_CYCLES) begin
                     sclk_reg <= ~sclk_reg;
                     sclk_counter <= 0;
-                    full_period <= ~full_period;
-                    if(full_period) begin
+                    if(sclk_reg == 1) begin
                         current_bit <= current_bit - 1;
                     end
                     if(current_bit != 0) begin
@@ -187,7 +185,6 @@ module dac#(
             else if(state == CONV_END) begin
                 sclk_reg <= 1;
                 sclk_counter <= 0;
-                full_period <= 0;
                 cs_reg <= 1;
             end
             
